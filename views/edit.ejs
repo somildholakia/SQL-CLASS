@@ -8,8 +8,14 @@
 <body>
 
     <h2> 
-        You are about to edit this user
+        You are about to edit this user <%= user.email %>
     </h2>
     
+    <form method="post" action="/user/<%=user.id%>?_method=PATCH"> 
+        <textarea name="username"> <%= user.username %>  </textarea>
+        <input type="password" name="password" placeholder="enter password">
+        <button>Edit</button>
+    </form>
+
 </body>
 </html>

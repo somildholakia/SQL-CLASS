@@ -3,6 +3,7 @@ const mysql = require("mysql2")
 const express = require("express")
 const app = express();
 const path = require("path");
+const method = require("method-override");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -95,5 +96,21 @@ app.get("/user",(req,res) => {
 
 app.get("/user/:id/edit", (req,res) => {
     let {id} = req.params;
-    res.render("edit.ejs")
+    let q = `SELECT * FROM user WHERE id='${id}'`;
+    // res.render("edit.ejs")
+
+    try {
+        connection.query(q,(err,result) => {
+            if(err) throw err;
+            let user = result[0];
+            res.render("edit.ejs", { user });
+        })
+    } catch(err) {
+        console.log("some err", err);
+    }
+})
+
+
+app.patch("/user/:id",(req,res) => {
+    res.send("updated")
 })
