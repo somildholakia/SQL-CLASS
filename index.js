@@ -12,36 +12,36 @@ const connection = mysql.createConnection({
 });
 
 
-let createRandomUser = () => {
-    return [
-        faker.string.uuid(),
-        faker.internet.username(),
-        faker.internet.email(),
-        faker.internet.password(),
+// let createRandomUser = () => {
+//     return [
+//         faker.string.uuid(),
+//         faker.internet.username(),
+//         faker.internet.email(),
+//         faker.internet.password(),
 
-    ]
-}
+//     ]
+// }
 
-let q = "INSERT INTO user (id,username,email,password) VALUES ?";
+// let q = "INSERT INTO user (id,username,email,password) VALUES ?";
 
-let data = [];
-for (let i = 1; i <= 100; i++) {
-   data.push( createRandomUser());
-    
-}
+// let data = [];
+// for (let i = 1; i <= 100; i++) {
+//    data.push( createRandomUser());
 
-try {
+// }
 
-    connection.query(q, [data], (err, result) => {
-        if (err) throw err;
-        console.log(result);
-    });
-} catch (err) {
-    console.log(err);
-}
+// try {
+
+//     connection.query(q, [data], (err, result) => {
+//         if (err) throw err;
+//         console.log(result);
+//     });
+// } catch (err) {
+//     console.log(err);
+// }
 
 
-connection.end();
+// connection.end();
 
 
 
@@ -61,7 +61,20 @@ app.listen(port, () => {
     console.log(`Listening at port:${port}`)
 })
 
+
+
 app.get("/", (req, res) => {
-    res.send("Server Working")
+    let q = `SELECT count(*) FROM user`;
+    try {
+        connection.query(q, (err, result) => {
+            if (err) throw err;
+            console.log(result[0]["count(*)"]);
+            res.send("success")
+        })
+    } catch (err) {
+        console.log(err);
+        res.send("error in dataBase")
+    }
+   
 })
 
