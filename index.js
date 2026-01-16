@@ -68,8 +68,8 @@ app.get("/", (req, res) => {
     try {
         connection.query(q, (err, result) => {
             if (err) throw err;
-            console.log(result[0]["count(*)"]);
-            res.send("success")
+            let count = (result[0]["count(*)"]);
+            res.render("home.ejs",{count});
         })
     } catch (err) {
         console.log(err);
@@ -78,3 +78,22 @@ app.get("/", (req, res) => {
    
 })
 
+app.get("/user",(req,res) => {
+    let q = `SELECT * FROM user`;
+
+    try {
+        connection.query(q,(err,result) => {
+            if(err) throw err;
+            // console.log(result);
+            res.render("users.ejs",{ result });
+        });
+    } catch(err) {
+        console.log(err);
+        res.send("some error in DataBase");
+    }
+});
+
+app.get("/user/:id/edit", (req,res) => {
+    let {id} = req.params;
+    res.render("edit.ejs")
+})
