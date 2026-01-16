@@ -11,9 +11,28 @@ const connection = mysql.createConnection({
     password: "Somil5515@",
 });
 
+
+let createRandomUser = () => {
+    return [
+        faker.string.uuid(),
+        faker.internet.username(),
+        faker.internet.email(),
+        faker.internet.password(),
+
+    ]
+}
+
+let q = "INSERT INTO user (id,username,email,password) VALUES ?";
+
+let data = [];
+for (let i = 1; i <= 100; i++) {
+   data.push( createRandomUser());
+    
+}
+
 try {
 
-    connection.query("SHOW TABLES", (err, result) => {
+    connection.query(q, [data], (err, result) => {
         if (err) throw err;
         console.log(result);
     });
@@ -21,17 +40,8 @@ try {
     console.log(err);
 }
 
+
 connection.end();
-
-let createRandomUser = () => {
-    return {
-        userId: faker.string.uuid(),
-        username: faker.internet.username(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-
-    };
-}
 
 
 
@@ -54,3 +64,4 @@ app.listen(port, () => {
 app.get("/", (req, res) => {
     res.send("Server Working")
 })
+
