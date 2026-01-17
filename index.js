@@ -5,6 +5,8 @@ const app = express();
 const path = require("path");
 const method = require("method-override");
 
+app.use(method("_method"));
+
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
